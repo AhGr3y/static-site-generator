@@ -13,6 +13,11 @@ from block_markdown import (
     block_type_heading,
 )
 
+from copy_docs import (
+    clear_dir,
+    copy_docs,
+)
+
 def generate_page(from_path, template_path, dest_path):
     
     # Print what this function is about to do
@@ -79,61 +84,12 @@ def extract_title(md):
     # Raise error as no h1 found
     raise ValueError("Invalid markdown for html")
 
-def clear_dir(dir):
-
-    # Check if dir exist
-    if os.path.exists(dir) == True:
-        # Remove dir
-        shutil.rmtree(dir)
-        # Create dir in same directory
-        os.mkdir(dir)
-
-def copy_static_to_public(src, dst):
-    
-    # Raise error if src does not exist
-    if os.path.exists(src) == False:
-        raise ValueError("src does not exist!")
-
-    # If dst does not exist, create it
-    if os.path.exists(dst) == False:
-        os.mkdir(dst)
-
-    # Split files/directories in src into a list
-    docs = os.listdir(src)
-
-    # Loop through docs
-    for doc in docs:
-
-        # Get path for doc on src and dst
-        src_path = os.path.join(src, f"{doc}")
-        dst_path = os.path.join(dst, f"{doc}")
-
-        # Check if doc is a directory
-        if os.path.isfile(src_path) == False:
-            # Create a directory with same name as doc on dst
-            os.mkdir(dst_path)
-            # Recursively call copy_static_to_public with doc as a new starting point directory
-            copy_static_to_public(src_path, dst_path)
-
-        # Check if doc is a file
-        elif os.path.isfile(src_path):
-            # Copy doc to dst
-            copy_path = shutil.copy(src_path, dst)
-            # log the copy operation
-            print(f'Copying "{src_path}" to "{copy_path}"')
-
 def main():
     pass
 
 main()
 
 if __name__ == "__main__":
-    """
-    staticDir = "./static"
-    publicDir = "./public"
-    clear_dir(publicDir)
-    copy_static_to_public(staticDir, publicDir)
-    """
 
     from_path = "./content/index.md"
     template_path = "./template.html"
